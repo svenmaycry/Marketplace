@@ -1,5 +1,8 @@
+import { useDispatch } from "react-redux"
 import { IProduct } from "../types"
 import Quantity from "./Quantity"
+import { addToCart } from "../store/card/actions"
+import { useState } from "react"
 
 interface IProductItem {
 	product: IProduct
@@ -7,8 +10,12 @@ interface IProductItem {
 
 const ProductItem = ({ product }: IProductItem) => {
 
+	const [count, setCount] = useState(0)
+
+	const dispatch = useDispatch()
+
 	const addHandler = () => {
-		console.log(product._id);
+		dispatch(addToCart(product, count))
 	}
 
 	return (
@@ -16,7 +23,7 @@ const ProductItem = ({ product }: IProductItem) => {
 			<img src={product.imagePath} alt={product.name} width='200' />
 			<div className="text-lg font-bold my-1">{product.name}</div>
 			<div className="text-sm text-gray-600">{product.price}$</div>
-			<Quantity />
+			<Quantity count={count} setCount={setCount} />
 			<button onClick={addHandler} className=" bg-orange-400 font-semibold rounded-md py-1 px-2">В корзину</button>
 		</div>
 	)

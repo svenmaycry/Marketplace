@@ -1,27 +1,24 @@
 import cn from 'classnames';
-import { ICardItem } from '../types';
 import { useState } from 'react';
+import { useTypedSelector } from '../hooks/useTypedSelector';
+import { useDispatch } from 'react-redux';
+import { removeFromCart } from '../store/card/actions';
 
-const cardItems: ICardItem[] = [
-	{
-		_id: 'wow1',
-		imagePath: 'https://dodopizza-a.akamaihd.net/static/Img/Products/f8bcc0d18f5a4817a720a159f0f8c37c_292x292.webp',
-		name: 'Пицца Жюльен',
-		count: 1,
-		price: 489,
-	},
-]
 
 const Header = () => {
 
 	const [isShowCard, setIsShowCard] = useState(false)
 
-	const total = cardItems.reduce((acc, item) =>
+	const cart = useTypedSelector(state => state.cart)
+
+	const total = cart.reduce((acc, item) =>
 		acc + item.price
 		, 0)
 
+	const dispatch = useDispatch()
+
 	const removeHandler = (id: string) => {
-		console.log(id);
+		dispatch(removeFromCart(id))
 	}
 
 	return (
@@ -35,16 +32,17 @@ const Header = () => {
 		>
 			<img className=' py-3' src='../img/obsidian.svg' alt="" width='250' />
 
-			<button className='bg-transparent border-none' onClick={() => setIsShowCard(!isShowCard)}>
+			<button className='bg-transparent border-none relative' onClick={() => setIsShowCard(!isShowCard)}>
 				<img src='./img/bx-cart.svg' alt="" width='40' />
+				<div className='text-white absolute bottom-0 right-0 font-bold rounded-full  bg-slate-600 w-5 h-5 flex items-center justify-center'>{cart.length}</div>
 			</button>
 
-			<div className={cn('absolute right-0 top-20 shadow-lg p-5 rounded-lg mr-2 bg-indigo-300', {
+			<div className={cn('absolute right-0 top-20 shadow-lg rounded-lg mr-2 bg-indigo-300 p-3', {
 				hidden: !isShowCard
 			})}
 			>
-				{cardItems.map(item => (
-					<div className='flex items-center mb-1' key={item._id}>
+				{cart.map(item => (
+					<div className='flex items-center mb-3' key={item._id}>
 						<img
 							src={item.imagePath}
 							alt={item.name}
@@ -53,8 +51,8 @@ const Header = () => {
 							className=' mr-3'
 						/>
 						<div>
-							<div>{item.name}</div>
-							<div>{`${item.count} x $${item.price}`}</div>
+							<div className='font-semibold'>{item.name}</div>
+							<div>{`${item.count} x $${item.price.toLocaleString()}`}</div>
 							<button
 								className='text-red-700 bg-transparent border-0'
 								onClick={() => removeHandler(item._id)}
@@ -65,7 +63,7 @@ const Header = () => {
 					</div>
 				))}
 				<div className='text-lg border-solid border-t-2 border-black pt-2'>
-					Total: <b>${total}</b>
+					<span className='text-red-600'>Total</span>: <b>${total.toLocaleString()}</b>
 				</div>
 			</div>
 		</div>
