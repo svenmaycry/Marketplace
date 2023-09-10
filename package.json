@@ -2,7 +2,7 @@
 	"name": "my-vue-app",
 	"private": true,
 	"version": "0.0.0",
-	"homepage": "https://github.com/svenmaycry/Marketplace",
+	"homepage": "https://mini-market-sage.vercel.app",
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
