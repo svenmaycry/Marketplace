@@ -10,8 +10,7 @@ const persistConfig = {
 	whitelist: ['cart'],
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const persistedReducer = persistReducer<any, any>(persistConfig, rootReducer)
+const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 const store = createStore(persistedReducer)
 const persistor = persistStore(store)

@@ -10,7 +10,7 @@ interface IProductItem {
 
 const ProductItem = ({ product }: IProductItem) => {
 
-	const [count, setCount] = useState(0)
+	const [count, setCount] = useState(1)
 
 	const dispatch = useDispatch()
 
